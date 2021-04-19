@@ -2,6 +2,11 @@ import { Sequelize } from 'sequelize';
 import url from 'url';
 import allConfig from '../config/config.js';
 
+import billModel from './bill.mjs'
+import itemModel from './item.mjs'
+import personModel from './person.mjs'
+
+
 const env = process.env.NODE_ENV || 'development';
 
 const config = allConfig[env];
@@ -29,6 +34,17 @@ if (env === 'production') {
 } else {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
+
+
+db.Bill = billModel(sequelize, Sequelize.DataTypes);
+db.Person = personModel(sequelize, Sequelize.DataTypes);
+db.Item = itemModel(sequelize, Sequelize.DataTypes);
+
+db.Bill.belongsToMany(db.Person, { through:'bill_people' });
+db.Person.belongsToMany(db.Bill, { through: 'bill_people' });
+
+db.Bill.hasMany(db.Item);
+db.Item.belongsTo(db.Bill);
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
