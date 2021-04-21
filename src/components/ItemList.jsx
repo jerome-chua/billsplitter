@@ -5,9 +5,10 @@ export default function ItemList({
   billId, itemList, chooseItemIdx, selectedItem, people,
 }) {
   const [selectedItemIdx, setSelectedItemIdx] = useState();
+  const [diner, setDiner] = useState();
   const [itemPeople, setItemPeople] = useState({
     // Key: Set items in itemList as keys.
-    // Value: Create array & store people.
+    // Value: [] Create array & store people.
   });
 
   const setItemSelect = (item, index) => {
@@ -16,9 +17,27 @@ export default function ItemList({
   };
 
   const handleSelectChange = (evt) => {
-    const diner = evt.target.value;
-    console.log(diner);
+    const selectedDiner = evt.target.value;
+    setDiner(selectedDiner);
   };
+
+  const handleAddPersonClick = (e) => {
+    if (Object.keys(itemPeople).length === 0) {
+      itemList.forEach((item) => {
+        itemPeople[item.name] = [];
+      });
+    }
+
+    if (!itemPeople[selectedItem.name]) {
+      itemPeople[selectedItem.name] = [];
+    } else {
+      itemPeople[selectedItem.name].push(diner);
+    }
+
+    setItemPeople({ ...itemPeople });
+  };
+
+  console.log('LOOOOOK HERE!!', itemPeople);
 
   const getNames = () => {
     axios.get(`/names/${billId}`)
@@ -31,10 +50,6 @@ export default function ItemList({
       .catch((err) => {
         console.err('Get names error: ', err);
       });
-  };
-
-  const handleAddPersonClick = (e) => {
-    console.log(e.target);
   };
 
   return (
@@ -88,8 +103,12 @@ export default function ItemList({
               {': '}
               <em>{ selectedItem ? selectedItem.name : <div /> }</em>
             </h5>
-            <p />
-
+            {Object.entries(itemPeople).map(([key, val]) => (
+              <div className="mt-3">
+                <h6>{key}</h6>
+                <p>{val}</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>
