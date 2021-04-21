@@ -8,8 +8,7 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       total: {
-        allowNull: false,
-        type: Sequelize.DECIMAL,
+        type: Sequelize.DECIMAL(10, 2),
       },
       name: {
         allowNull: false,
@@ -37,7 +36,6 @@ module.exports = {
         type: Sequelize.TEXT,
       },
       amount: {
-        allowNull: false,
         type: Sequelize.DECIMAL(10, 2),
       },
       bill_id: {
@@ -45,7 +43,7 @@ module.exports = {
           model: 'bills',
           key: 'id',
         },
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       created_at: {
         allowNull: false,
@@ -69,14 +67,14 @@ module.exports = {
           model: 'bills',
           key: 'id',
         },
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       person_id: {
         references: {
           model: 'people',
           key: 'id',
         },
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       created_at: {
         allowNull: false,
@@ -87,7 +85,6 @@ module.exports = {
         type: Sequelize.DATE,
       },
     });
-
 
     await queryInterface.createTable('items', {
       id: {
@@ -103,6 +100,13 @@ module.exports = {
       price: {
         allowNull: false,
         type: Sequelize.DECIMAL(10, 2),
+      },
+      bill_id: {
+        references: {
+          model: 'bills',
+          id: 'id',
+        },
+        type: Sequelize.INTEGER,
       },
       created_at: {
         allowNull: false,
@@ -120,5 +124,5 @@ module.exports = {
     await queryInterface.dropTable('people');
     await queryInterface.dropTable('bills');
     await queryInterface.dropTable('items');
-  }
+  },
 };

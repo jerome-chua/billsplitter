@@ -4,11 +4,10 @@ export default function billModel(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true,
       autoIncrement: true,
-      type: DataTypes.INTEGER,      
+      type: DataTypes.INTEGER,
     },
     total: {
-      allowNull: false,
-      type: DataTypes.DECIMAL,
+      type: DataTypes.DECIMAL(10, 2),
     },
     name: {
       allowNull: false,
@@ -23,6 +22,5 @@ export default function billModel(sequelize, DataTypes) {
       type: DataTypes.DATE,
     },
   },
-   { underscored: true }, 
-  );
+  { underscored: true });
 }

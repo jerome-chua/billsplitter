@@ -11,7 +11,6 @@ export default function personModel(sequelize, DataTypes) {
       type: DataTypes.TEXT,
     },
     amount: {
-      allowNull: false,
       type: DataTypes.DECIMAL(10, 2),
     },
     billId: {
@@ -19,7 +18,7 @@ export default function personModel(sequelize, DataTypes) {
         model: 'bills',
         key: 'id',
       },
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
     },
     createdAt: {
       allowNull: false,
@@ -30,6 +29,5 @@ export default function personModel(sequelize, DataTypes) {
       type: DataTypes.DATE,
     },
   },
-    { underscored: true },
-  );
+  { underscored: true });
 }

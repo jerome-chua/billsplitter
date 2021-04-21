@@ -12,6 +12,13 @@ export default function itemModel(sequelize, DataTypes) {
     price: {
       type: DataTypes.DECIMAL(10, 2),
     },
+    billId: {
+      references: {
+        model: 'bills',
+        id: 'id',
+      },
+      type: DataTypes.INTEGER,
+    },
     createdAt: {
       allowNull: false,
       type: DataTypes.DATE,
@@ -20,7 +27,6 @@ export default function itemModel(sequelize, DataTypes) {
       allowNull: false,
       type: DataTypes.DATE,
     },
-  }, 
-    { underscored: true }
-  );
+  },
+  { underscored: true });
 }
