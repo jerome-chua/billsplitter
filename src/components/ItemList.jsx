@@ -44,10 +44,6 @@ export default function ItemList({
     }
 
     setItemPeople({ ...itemPeople });
-
-    const amountOwed = getNames();
-    console.log('amountOwed', amountOwed);
-    console.log('itemList', itemList);
   };
 
   const associatedDiners = Object.entries(itemPeople)
@@ -67,16 +63,26 @@ export default function ItemList({
     const len = Object.values(itemPeople).map((people) => people.length);
     const itemPrice = itemList.map((item) => Number(item.price));
 
-    console.log(keys);
-    console.log(len);
-    console.log(itemPrice);
-
-    const tabulated = {};
+    const tabulatedAmt = {};
     keys.forEach((key, arrIndex) => {
-      tabulated[key] = parseFloat((itemPrice[arrIndex] / len[arrIndex]).toFixed(2));
+      tabulatedAmt[key] = parseFloat((itemPrice[arrIndex] / len[arrIndex]).toFixed(2));
     });
 
-    console.log('tabulated', tabulated);
+    const personAmtOwed = {};
+
+    console.log('tabulatedAmt', tabulatedAmt);
+    console.log('itemPeople', itemPeople);
+
+    // If respective diners under item true, we add the tabulatedAmt (per item) to each diner.
+    Object.entries(itemPeople).forEach(([item, people], index) => {
+      people.forEach((person) => {
+        if (!personAmtOwed[person]) {
+          personAmtOwed[person] = 0;
+        } else if (item === tabulatedAmt) {
+          console.log('Akira');
+        }
+      });
+    });
   };
 
   return (
