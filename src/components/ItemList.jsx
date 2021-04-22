@@ -6,10 +6,7 @@ export default function ItemList({
 }) {
   const [selectedItemIdx, setSelectedItemIdx] = useState();
   const [diner, setDiner] = useState();
-  const [itemPeople, setItemPeople] = useState({
-    // Key: Set items in itemList as keys.
-    // Value: [] Create array & store people.
-  });
+  const [itemPeople, setItemPeople] = useState({});
 
   const setItemSelect = (item, index) => {
     setSelectedItemIdx(index);
@@ -21,7 +18,19 @@ export default function ItemList({
     setDiner(selectedDiner);
   };
 
-  const handleAddPersonClick = (e) => {
+  const getNames = () => {
+    axios.get(`/names/${billId}`)
+      .then((res) => {
+        const names = res.data;
+        return names;
+      })
+      .catch((err) => {
+        console.err('Get names error: ', err);
+      });
+  };
+
+  const handleAddPersonClick = () => {
+    // Create an Object that stores the food items as keys, & people names as values.
     if (Object.keys(itemPeople).length === 0) {
       itemList.forEach((item) => {
         itemPeople[item.name] = [];
@@ -35,21 +44,26 @@ export default function ItemList({
     }
 
     setItemPeople({ ...itemPeople });
+
+    const amountOwed = getNames();
+    console.log('amountOwed', amountOwed);
+    console.log('itemList', itemList);
   };
 
-  console.log('LOOOOOK HERE!!', itemPeople);
+  const associatedDiners = Object.entries(itemPeople)
+    .filter(([key, _]) => selectedItem.name === key)
+    .map(([_, dinersArr]) => (
+      <div>
+        {dinersArr.map((dinerName) => (
+          <h6 key={dinerName.toString()}>
+            {dinerName}
+          </h6>
+        ))}
+      </div>
+    ));
 
-  const getNames = () => {
-    axios.get(`/names/${billId}`)
-      .then((res) => {
-        console.log('FIND NAMES', res.data);
-        const names = res.data;
-
-        return names;
-      })
-      .catch((err) => {
-        console.err('Get names error: ', err);
-      });
+  const tabulateAmt = () => {
+    console.log('itemPeople: -----', itemPeople);
   };
 
   return (
@@ -63,7 +77,7 @@ export default function ItemList({
               <button
                 key={item.id}
                 type="button"
-                className={index === selectedItemIdx ? 'mx-1 mt-1 btn btn-success' : 'mx-1 mt-1 btn btn-warning'}
+                className={index === selectedItemIdx ? 'mx-1 mt-1 btn btn-success' : 'mx-1 mt-1 btn btn-outline-success'}
                 onClick={() => setItemSelect(item, index)}
               >
                 {item.name}
@@ -101,18 +115,15 @@ export default function ItemList({
             <h5 className="lead">
               All who ate
               {': '}
-              <em>{ selectedItem ? selectedItem.name : <div /> }</em>
+              <span className="text-success font-weight-bold">{ selectedItem ? selectedItem.name : <div /> }</span>
             </h5>
-            {Object.entries(itemPeople).map(([key, val]) => (
-              <div className="mt-3">
-                <h6>{key}</h6>
-                <p>{val}</p>
-              </div>
-            ))}
+            {associatedDiners}
           </div>
         </div>
+        <button type="submit" onClick={tabulateAmt} className="btn btn-sm btn-danger mt-3">
+          Tabulate Amount Owed
+        </button>
       </div>
     </div>
-
   );
 }

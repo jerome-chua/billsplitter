@@ -2,27 +2,34 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export default function Form({
-  billId, setReqItems, addItem, addPerson,
+  billId, setReqItems, addItem, addPerson, totalBill, setTotalBill,
 }) {
   const [itemName, setItemName] = useState('');
   const [price, setPrice] = useState('');
   const [personName, setPersonName] = useState('');
+
+  console.log('TOtal bill', totalBill);
 
   const handleItemChange = (e) => {
     setItemName(e.target.value);
   };
 
   const handlePriceChange = (e) => {
+    console.log('Price', e.target.value);
     setPrice(e.target.value);
   };
 
   const itemData = {
     name: itemName,
     billId,
-    price,
+    price: Number(price),
   };
 
   const handleItemClick = () => {
+    // Add to total billing.
+    setTotalBill(totalBill + Number(price));
+
+    // Send item in DB.
     axios.post('/item', { itemData })
       .then((res) => {
         addItem(res.data); // Send back to App level all items.
@@ -73,7 +80,6 @@ export default function Form({
       <button type="submit" className="btn btn-warning my-1" onClick={handlePersonClick}>Submit</button>
 
       <br />
-      <hr />
 
       <button type="submit" className="btn btn-md btn-primary my-2 float-end" onClick={handleLastClick}>Get Items List</button>
 

@@ -9,6 +9,7 @@ export default function App() {
   const [billSubmit, setBillSubmit] = useState(false);
   const [reqItems, setReqItems] = useState(false);
   const [billId, setBillId] = useState(null);
+  const [totalBill, setTotalBill] = useState(0);
   const [itemList, setItemList] = useState([]);
   const [selectItemIdx, setSelectItemIdx] = useState();
   const [people, setPeople] = useState([]);
@@ -34,10 +35,10 @@ export default function App() {
     <div className="container w-75 mb-5">
       <div className="row">
         <div className="col-12">
-          {billSubmit ? <Form billId={billId} setReqItems={setReqItems} addItem={addItem} addPerson={addPerson} /> : <Intro setBillSubmit={setBillSubmit} setBillId={setBillId} />}
+          {billSubmit ? <Form billId={billId} setReqItems={setReqItems} addItem={addItem} addPerson={addPerson} totalBill={totalBill} setTotalBill={setTotalBill} /> : <Intro setBillSubmit={setBillSubmit} setBillId={setBillId} />}
         </div>
         <div className="col-12">
-          {reqItems ? <Bill billId={billId} setReqItems={setReqItems} itemList={itemList} chooseItemIdx={chooseItemIdx} selectedItem={selectedItem} people={people} /> : null}
+          {reqItems ? <Bill billId={billId} setReqItems={setReqItems} itemList={itemList} chooseItemIdx={chooseItemIdx} selectedItem={selectedItem} people={people} totalBill={totalBill} /> : null}
         </div>
       </div>
     </div>

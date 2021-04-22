@@ -4,7 +4,6 @@ export default function initPeopleController(db) {
       const { personData } = req.body;
 
       const createPerson = await db.Person.create(personData);
-      console.log('createPerson: \n-----\n', createPerson);
 
       res.send(createPerson);
     } catch (err) {
@@ -16,13 +15,11 @@ export default function initPeopleController(db) {
     const { billId } = req.params;
 
     try {
-      const people = db.Person.findAll({
+      const people = await db.Person.findAll({
         where: {
           billId,
         },
       });
-
-      console.log('my people called by my name: ----\n', people);
 
       res.send(people);
     } catch (err) {
