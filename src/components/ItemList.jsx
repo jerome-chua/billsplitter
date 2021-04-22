@@ -63,7 +63,20 @@ export default function ItemList({
     ));
 
   const tabulateAmt = () => {
-    console.log('itemPeople: -----', itemPeople);
+    const keys = itemList.map((item) => item.name);
+    const len = Object.values(itemPeople).map((people) => people.length);
+    const itemPrice = itemList.map((item) => Number(item.price));
+
+    console.log(keys);
+    console.log(len);
+    console.log(itemPrice);
+
+    const tabulated = {};
+    keys.forEach((key, arrIndex) => {
+      tabulated[key] = parseFloat((itemPrice[arrIndex] / len[arrIndex]).toFixed(2));
+    });
+
+    console.log('tabulated', tabulated);
   };
 
   return (
